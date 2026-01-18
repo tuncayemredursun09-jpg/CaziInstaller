@@ -1,21 +1,33 @@
 #!/bin/bash
+# --- CAZI SHELL PRO (V3) ---
+# Optimized for Gm Era 50 | 150+ Commands | VNC & T-Logo
 
-# --- Termux Super-Shell Installer ---
-# Optimized for Mali GPU / Gm Era 50
-# 130+ Commands Included
-
-echo "Installing dependencies..."
+echo "Updating System & Installing VNC/X11 Tools..."
 pkg update && pkg upgrade -y
-pkg install git python nodejs wget curl nano neofetch htop nmap termux-api tree lsd bat figlet -y
-
-echo "Configuring .bashrc..."
+pkg install git python nodejs wget curl nano neofetch htop nmap termux-api \
+tree lsd bat figlet cmatrix tigervnc x11-repo tur-repo -y
 
 cat << 'EOF' > ~/.bashrc
-# --- [1-25] SYSTEM & NAVIGATION ---
+# --- [T-LOGO BANNER] ---
+clear
+echo -e "\e[1;36m"
+echo "  TTTTTTTTTTTTT  "
+echo "  T           T  "
+echo "  TTTTT   TTTTT  "
+echo "      T   T      "
+echo "      T   T      "
+echo "      T   T      "
+echo "      T_T        "
+echo -e "\e[1;37m    CAZI SHELL V3 \e[0m"
+echo -e "\e[1;34m  Gm Era 50 | 150+ Commands | VNC Active\e[0m"
+
+# --- LIGHTER/CLEAN PROMPT ---
+export PS1="\[\e[1;36m\]┌──(\[\e[1;37m\]Cazi-Shell\[\e[1;36m\])─[\[\e[1;32m\]\w\[\e[1;36m\]]\n└──\[\e[1;37m\]$ \[\e[0m\]"
+
+# --- NAVIGATION & SYSTEM ---
 alias c='clear'
 alias ..='cd ..'
 alias ...='cd ../..'
-alias ....='cd ../../..'
 alias h='history'
 alias q='exit'
 alias refresh='source ~/.bashrc'
@@ -26,91 +38,75 @@ alias rd='rmdir'
 alias rf='rm -rf'
 alias cp='cp -iv'
 alias mv='mv -iv'
-alias ln='ln -s'
-alias fsize='du -sh'
-alias search='find . -name'
-alias count='ls -1 | wc -l'
+alias md='mkdir -p'
 alias can='chmod +x'
 alias edit='nano'
 alias v='vim'
-alias reload='source ~/.bashrc'
-alias mcd='mkdir -p'
-
-# --- [26-50] FILE VISUALS (lsd & bat) ---
 alias ls='lsd'
 alias l='ls -l'
 alias la='ls -a'
 alias ll='ls -la'
 alias lt='ls --tree'
 alias cat='bat'
-alias tree='tree -C'
-alias l1='ls -1'
-alias lsize='ls -lS'
-alias lold='ls -lt'
-alias lnew='ls -ltr'
 
-# --- [51-75] PACKAGE MANAGEMENT ---
-alias upd='pkg update'
-alias upg='pkg upgrade -y'
-alias upall='pkg update && pkg upgrade -y'
-alias ins='pkg install'
-alias rem='pkg uninstall'
-alias searchpkg='pkg search'
-alias listpkg='pkg list-installed'
-alias clean='pkg clean'
-alias reinstall='pkg reinstall'
-alias fix='dpkg --configure -a'
+# --- VNC & REMOTE DESKTOP ---
+alias vnc-start='vncserver :1'
+alias vnc-stop='vncserver -kill :1'
+alias vnc-list='vncserver -list'
+alias display='export DISPLAY=:1'
+alias novnc='pkg install novnc && novnc_server --vnc localhost:5901'
 
-# --- [76-100] NETWORKING & TOOLS ---
+# --- NETWORKING & SECURITY ---
 alias myip='curl ifconfig.me'
 alias localip='ifconfig | grep "inet " | grep -v 127.0.0.1'
 alias ports='netstat -tulan'
-alias ping='ping -c 5'
-alias nmap-fast='nmap -F'
 alias scan='nmap -sP'
+alias nmap-fast='nmap -F'
+alias ping='ping -c 5'
 alias header='curl -I'
-alias checkweb='curl -Is'
-alias ssh-start='sshd'
-alias ssh-stop='pkill sshd'
-alias ftp='python -m pyftpdlib -p 2121'
-alias dns='cat /etc/resolv.conf'
+alias ssh-on='sshd'
+alias ssh-off='pkill sshd'
+alias passgen='openssl rand -base64 12'
+alias encrypt='gpg -c'
+alias decrypt='gpg -d'
 
-# --- [101-125] HARDWARE & API (Gm Era 50 Optimized) ---
+# --- SYSTEM & PERFORMANCE (GM ERA 50) ---
 alias top='htop'
 alias mem='free -h'
 alias cpu='lscpu'
 alias sysinfo='neofetch'
 alias battery='termux-battery-status'
-alias vol='termux-volume'
-alias vibrate='termux-vibrate'
 alias torch='termux-torch'
-alias bright='termux-brightness'
-alias cam-info='termux-camera-info'
-alias tts='termux-tts-speak'
-alias contact='termux-contact-list'
-alias sms-list='termux-sms-list'
+alias vibrate='termux-vibrate'
+alias vol='termux-volume'
+alias clock='watch -t -n 1 "date +%T | figlet"'
+alias disk='df -h'
+alias weather='curl wttr.in'
+alias moon='curl wttr.in/Moon'
+alias calc='python -q'
+alias cpu-watch='watch -n 1 "lscpu | grep MHz"'
 
-# --- [126-140] GIT & DEV ---
+# PERFORMANCE EXPORTS (Mali GPU / WebGL 1.0)
+export GALLIUM_DRIVER=zink
+export MESA_LOADER_DRIVER_OVERRIDE=zink
+export WEBGL_STUB=1
+export LD_PRELOAD=$PREFIX/lib/libtermux-exec.so
+
+# --- PKG & GIT ---
+alias upd='pkg update'
+alias upg='pkg upgrade -y'
+alias upall='pkg update && pkg upgrade -y'
+alias ins='pkg install'
+alias rem='pkg uninstall'
+alias clean='pkg clean'
 alias gs='git status'
 alias ga='git add .'
 alias gc='git commit -m'
 alias gp='git push'
 alias gl='git pull'
 alias gcl='git clone'
-alias gb='git branch'
-alias gd='git diff'
-alias server='python -m http.server 8080'
-alias py='python'
-alias py3='python3'
-alias pipins='pip install'
 
-# --- PERFORMANCE FIXES (Mali GPU / WebGL 1.0) ---
-export GALLIUM_DRIVER=zink
-export MESA_LOADER_DRIVER_OVERRIDE=zink
-export WEBGL_STUB=1
-export LD_PRELOAD=$PREFIX/lib/libtermux-exec.so
-
-# FUNCTIONS
+# AUTO-EXTRACT
 extract () {
   if [ -f $1 ] ; then
     case $1 in
@@ -118,16 +114,11 @@ extract () {
       *.tar.gz)  tar xzf $1 ;;
       *.zip)     unzip $1   ;;
       *.7z)      7z x $1    ;;
-      *) echo "Extraction Error" ;;
+      *) echo "Error: Extractor failed" ;;
     esac
   fi
 }
-
-# WELCOME
-clear
-figlet "TERMUX PRO"
-echo -e "\e[1;34mGm Era 50 Optimized | 130+ Commands Loaded\e[0m"
 EOF
 
 source ~/.bashrc
-echo "Installation Complete! Type 'refresh' to start."
+echo "Cazi Shell V3 Installed! Use 'vnc-start' for Desktop."
